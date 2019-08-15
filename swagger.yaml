@@ -180,15 +180,7 @@ definitions:
         type: "string"
         format: "uuid"
       eventChannels: 
-        $ref: "#/definitions/EventChannels"          
-        example:
-          - key: "ChannelId"
-            value: "1"
-          - key: "ClipLocation"
-            value: "default"
-            type: "System.String"
-          - key: "IsAutoAssigned"
-            value: false     
+        $ref: "#/definitions/EventChannels"   
       properties:
         $ref: "#/definitions/Properties"
     example:
@@ -217,7 +209,7 @@ definitions:
         - key: "IsCrash"
           value: false
   UpdateEventDto:
-    type: "object"
+    type: "array"
     properties:
       $ref: "#/definitions/Properties"
     example:
@@ -226,112 +218,15 @@ definitions:
         - key: "ClipLocation"
           value: "default"
           type: "System.String"
-  Order:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      eventId:
-        type: "integer"
-        format: "int64"
-      quantity:
-        type: "integer"
-        format: "int32"
-      shipDate:
-        type: "string"
-        format: "date-time"
-      status:
-        type: "string"
-        description: "Order Status"
-        enum:
-        - "placed"
-        - "approved"
-        - "delivered"
-      complete:
-        type: "boolean"
-        default: false
-    xml:
-      name: "Order"
-  Category:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Category"
-  User:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      username:
-        type: "string"
-      firstName:
-        type: "string"
-      lastName:
-        type: "string"
-      email:
-        type: "string"
-      password:
-        type: "string"
-      phone:
-        type: "string"
-      userStatus:
-        type: "integer"
-        format: "int32"
-        description: "User Status"
-    xml:
-      name: "User"
-  Tag:
-    type: "object"
-    properties:
-      id:
-        type: "integer"
-        format: "int64"
-      name:
-        type: "string"
-    xml:
-      name: "Tag"
   Event:
     type: "object"
-    required:
-    - "name"
-    - "photoUrls"
     properties:
       id:
-        type: "integer"
-        format: "int64"
-      category:
-        $ref: "#/definitions/Category"
-      name:
         type: "string"
-        example: "doggie"
-      photoUrls:
-        type: "array"
-        xml:
-          name: "photoUrl"
-          wrapped: true
-        items:
-          type: "string"
-      tags:
-        type: "array"
-        xml:
-          name: "tag"
-          wrapped: true
-        items:
-          $ref: "#/definitions/Tag"
-      status:
-        type: "string"
-        description: "event status in the store"
-        enum:
-        - "available"
-        - "pending"
-        - "sold"
+      eventChannels:
+        $ref: "#/definitions/EventChannels"
+      properties:
+        $ref: "#/definitions/Properties"
     xml:
       name: "Event"
   ApiResponse:
