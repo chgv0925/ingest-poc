@@ -9,8 +9,8 @@ info:
   license:
     name: "Apache 2.0"
     url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "localhost"
-basePath: "/ingest/v1"
+host: "10.251.52.230"
+basePath: "/feedingest/v1/ingest"
 tags:
 - name: "event"
   description: "Everything about your events"
@@ -21,7 +21,7 @@ schemes:
 - "https"
 - "http"
 paths:
-  /event:
+  /events:
     post:
       tags:
       - "event"
@@ -48,7 +48,7 @@ paths:
       - eventstore_auth:
         - "write:events"
         - "read:events"
-  /event/{eventId}:
+  /events/{eventId}:
     get:
       tags:
       - "event"
@@ -75,7 +75,7 @@ paths:
         404:
           description: "Event not found"
       security:
-      - api_key: []
+      - api_Key: []
     put:
       tags:
       - "event"
@@ -144,7 +144,7 @@ securityDefinitions:
     scopes:
       write:events: "modify events in your account"
       read:events: "read your events"
-  api_key:
+  api_Key:
     type: "apiKey"
     name: "api_key"
     in: "header"
@@ -152,12 +152,12 @@ definitions:
   Property:
     type: "object"
     properties:
-      key: 
+      Key: 
         type: "string"
         default: "ChannelId"
-      value:
+      Value:
         type: "object"
-      type: 
+      Type: 
         type: "string"
         enum:
           - "System.String"
@@ -169,63 +169,64 @@ definitions:
   EventChannels:
     type: "object"
     properties: 
-      instance: 
+      Instance: 
         type: "string"
-      properties:
+      Properties:
         $ref: "#/definitions/Properties"
   CreateEventDto:
     type: "object"
     properties:
-      id:
+      Id:
         type: "string"
         format: "uuid"
-      eventChannels: 
+      EventChannels: 
         $ref: "#/definitions/EventChannels"   
-      properties:
+      Properties:
         $ref: "#/definitions/Properties"
     example:
-      id: "{uuid}"
-      eventChannels: 
-        instance: "Main"
-        properties:
-          - key: "ChannelId"
-            value: "{channelId}"
-          - key: "ClipLocation"
-            value: "default"
-            type: "System.String"
-          - key: "IsAutoAssigned"
-            value: false  
-      properties:
-        - key: "Type"
-          value: "Feed"
-        - key: "ChannelType"
-          value: "PlayerRecorder"
-        - key: "Name"
-          value: "SFeed_{uuid}"
-        - key: "StartDateTime"
-          value: "2019-09-25T06:35:10.00Z"
-        - key: "EndDateTime"
-          value: "2019-09-25T06:35:50.00Z"
-        - key: "IsCrash"
-          value: false
+      Id: "{uuid}"
+      EventChannels: 
+        Instance: "Main"
+        Properties:
+          - Key: "ChannelId"
+            Value: "{channelId}"
+          - Key: "ClipLocation"
+            Value: "default"
+            Type: "System.String"
+          - Key: "IsAutoAssigned"
+            Value: false  
+      Properties:
+        - Key: "Type"
+          Value: "Feed"
+        - Key: "ChannelType"
+          Value: "PlayerRecorder"
+        - Key: "Name"
+          Value: "SFeed_{uuid}"
+        - Key: "StartDateTime"
+          Value: "2019-09-25T06:35:10.00Z"
+        - Key: "EndDateTime"
+          Value: "2019-09-25T06:35:50.00Z"
+        - Key: "IsCrash"
+          Value: false
   UpdateEventDto:
-    type: "array"
+    type: "object"
     properties:
-      $ref: "#/definitions/Properties"
+      Properties: 
+        $ref: "#/definitions/Properties"
     example:
-        - key: "ChannelId"
-          value: "{channelId}"
-        - key: "ClipLocation"
-          value: "default"
-          type: "System.String"
+        - Key: "ChannelId"
+          Value: "{channelId}"
+        - Key: "ClipLocation"
+          Value: "default"
+          Type: "System.String"
   Event:
     type: "object"
     properties:
-      id:
+      Id:
         type: "string"
-      eventChannels:
+      EventChannels:
         $ref: "#/definitions/EventChannels"
-      properties:
+      Properties:
         $ref: "#/definitions/Properties"
     xml:
       name: "Event"
