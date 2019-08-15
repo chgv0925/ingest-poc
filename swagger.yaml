@@ -18,8 +18,8 @@ tags:
     description: "Find out more"
     url: "http://swagger.io"
 schemes:
-- "https"
 - "http"
+- "https"
 paths:
   /events:
     post:
@@ -32,8 +32,8 @@ paths:
       - "application/json"
       - "application/xml"
       produces:
-      - "application/xml"
       - "application/json"
+      - "application/xml"
       parameters:
       - in: "body"
         name: "body"

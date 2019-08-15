@@ -1,0 +1,269 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Eventstore
+  description: A sample API that uses a eventstore as an example to demonstrate features in the OpenAPI 3.0 specification
+  termsOfService: http://swagger.io/terms/
+  contact:
+    name: Swagger API Team
+    email: apiteam@swagger.io
+    url: http://swagger.io
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://localhost:5000/ingest/{version}
+    description: The local server
+    variables:
+      version:
+        enum:
+          - v1
+          - v2
+        default: v2
+  - url: http://{subdomain}.site.com/ingest/{version}
+    description: The main prod server
+    variables:
+      subdomain:
+        default: production
+      version:
+        enum:
+          - v1
+          - v2
+        default: v2
+paths:
+  # "/events/{eventId}":
+  #   post:
+  #     requestBody:
+  #       description: user to add to the system
+  #       required: true
+  #       content:
+  #         application/json: 
+  #           schema:
+  #             type: array
+  #             items:
+  #               $ref: '#/components/schemas/Event'
+  #           examples:
+  #             - name: Fluffy
+  #               eventType: Cat
+  #             - http://example.com/event.json
+  #     parameters:
+  #       - name: eventId
+  #         in: path
+  #         description: ID of event to update
+  #         required: true
+  #         schema:
+  #           type: string
+  #     responses:
+  #       '201':
+  #         description: event created
+  #         content:
+  #           application/json:
+  #             schema: 
+  #               type: array
+  #               items: 
+  #                 $ref: '#/components/schemas/Event'
+  #           application/xml:
+  #             schema: 
+  #               type: array
+  #               items: 
+  #                 $ref: '#/components/schemas/Event'
+  /events:
+    get:
+      description: |
+        Returns all events from the system that the user has access to.
+      operationId: findEvents
+      parameters:
+        - name: tags
+          in: query
+          description: tags to filter by
+          required: false
+          style: form
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          in: query
+          description: maximum number of results to return
+          required: false
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: event response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      description: Creates a new event in the store.  Duplicates are allowed
+      operationId: addEvent
+      requestBody:
+        description: Event to add to the store
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEventDto'
+      responses:
+        '201':
+          description: event response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /events/{id}:
+    get:
+      description: Returns a user based on a single ID, if the user does not have access to the event
+      operationId: find event by id
+      parameters:
+        - name: id
+          in: path
+          description: ID of event to fetch
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: event response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: deletes a single event based on the ID supplied
+      operationId: deleteEvent
+      parameters:
+        - name: id
+          in: path
+          description: ID of event to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: event deleted
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Property:
+      type: "object"
+      required:
+        - Key
+        - Value
+      properties:
+        Key: 
+          type: "string"
+        Value:
+          type: "object"
+        Type: 
+          type: "string"
+          enum:
+            - "System.String"
+            - "System.Integer"
+            - "System.Boolean" 
+
+    PropertyList:
+      type: "array"
+      items:
+          $ref: "#/components/schemas/Property"
+
+    EventChannel:
+      type: "object"
+      properties: 
+        Instance: 
+          type: "string"
+        Properties:
+          $ref: "#/components/schemas/PropertyList"
+
+    EventChannelList:
+      type: "array"
+      items: 
+        $ref: "#/components/schemas/EventChannel"
+          
+    CreateEventDto:
+      type: "object"
+      properties:
+        Id:
+          type: "string"
+          format: "uuid"
+        EventChannels: 
+          $ref: "#/components/schemas/EventChannelList"   
+        Properties:
+          $ref: "#/components/schemas/PropertyList"
+      example:
+        Id: "{uuid}"
+        EventChannels: 
+          - Instance: "Main"
+            Properties:
+              - Key: "ChannelId"
+                Value: "{channelId}"
+              - Key: "ClipLocation"
+                Value: "default"
+                Type: "System.String"
+              - Key: "IsAutoAssigned"
+                Value: false  
+        Properties:
+          - Key: "Type"
+            Value: "Feed"
+          - Key: "ChannelType"
+            Value: "PlayerRecorder"
+          - Key: "Name"
+            Value: "SFeed_{uuid}"
+          - Key: "StartDateTime"
+            Value: "2019-09-25T06:35:10.00Z"
+          - Key: "EndDateTime"
+            Value: "2019-09-25T06:35:50.00Z"
+          - Key: "IsCrash"
+            Value: false
+
+    Event:
+      allOf:
+        - $ref: '#/components/schemas/CreateEventDto'
+        - type: object
+          required:
+          - Id
+          properties:
+            Id:
+              type: string
+              format: "uuid"
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
