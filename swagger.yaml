@@ -166,13 +166,17 @@ definitions:
     type: "array"
     items:
         $ref: "#/definitions/Property"  
-  EventChannels:
+  EventChannel:
     type: "object"
     properties: 
       Instance: 
         type: "string"
       Properties:
         $ref: "#/definitions/Properties"
+  EventChannels:
+    type: "array"
+    items: 
+      $ref: "#/definitions/EventChannel"
   CreateEventDto:
     type: "object"
     properties:
@@ -186,15 +190,15 @@ definitions:
     example:
       Id: "{uuid}"
       EventChannels: 
-        Instance: "Main"
-        Properties:
-          - Key: "ChannelId"
-            Value: "{channelId}"
-          - Key: "ClipLocation"
-            Value: "default"
-            Type: "System.String"
-          - Key: "IsAutoAssigned"
-            Value: false  
+        - Instance: "Main"
+          Properties:
+            - Key: "ChannelId"
+              Value: "{channelId}"
+            - Key: "ClipLocation"
+              Value: "default"
+              Type: "System.String"
+            - Key: "IsAutoAssigned"
+              Value: false  
       Properties:
         - Key: "Type"
           Value: "Feed"
@@ -209,10 +213,9 @@ definitions:
         - Key: "IsCrash"
           Value: false
   UpdateEventDto:
-    type: "object"
-    properties:
-      Properties: 
-        $ref: "#/definitions/Properties"
+    type: "array"
+    items:
+      $ref: "#/definitions/Properties"
     example:
         - Key: "ChannelId"
           Value: "{channelId}"
