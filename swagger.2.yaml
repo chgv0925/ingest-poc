@@ -1,0 +1,689 @@
+swagger: '2.0'
+info:
+  title: GV.SCS.Store.Ingest
+  description: Store for ingest
+  version: 0.0.1
+host: localhost #scs-newbury.gvnewsdev.com
+basePath: /scs-store/ingest
+schemes:
+  - https
+securityDefinitions:
+  scs_auth:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: 'https://scs-newbury.gvnewsdev.com/identity/connect/authorize'
+    tokenUrl: 'https://scs-newbury.gvnewsdev.com/identity/connect/token'
+    scopes:
+      platform.readonly: Read access to SCS Ingest Store.
+      platform: Read/write access to SCS Ingest Store.
+tags:
+  - name: Ingest Events
+    description: Store for ingest events
+paths:
+  /events:
+    post:
+      tags:
+      - Ingest Events
+      summary: "Add new event(s) to the store"
+      description: ""
+      operationId: addEvent
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: body
+        name: body
+        description: "Event object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/EventCreateDto"
+      responses:
+        201:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Event"
+            example:
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 1"
+                start: "2000-01-01T20:00:00.00Z"
+                end: "2000-01-01T22:00:00.00Z"
+                source:
+                  site: "London"
+                  channel: 1
+                  routerSource: "https://.."
+                classification:
+                  - "Sport": "57:Tennis"
+                  - "Competition": "1230:Gran Slam"
+                  - "Event": "520:French Open"
+                  - "Round": "1:"
+                  - "Disciplin": "2:"
+                  - "Gender": "57:Tennis"
+                  - "Sport": "57:Tennis"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 1"
+                start: "2000-01-01T20:00:00.00Z"
+                end: "2000-01-01T22:00:00.00Z"
+                source:
+                  site: "Paris"
+                  channel: 51
+                  routerSource: "https://.."
+                classification:
+                  - "Sport": "57:Tennis"
+                  - "Competition": "1230:Gran Slam"
+                  - "Event": "520:French Open"
+                  - "Round": "1:"
+                  - "Disciplin": "2:"
+                  - "Gender": "57:Tennis"
+                  - "Sport": "57:Tennis"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 2"
+                start: "2000-01-02T20:00:00.00Z"
+                end: "2000-01-02T22:00:00.00Z"
+                source:
+                  site: "London"
+                  channel: 1
+                  routerSource: "https://.."
+                classification:
+                  - "Sport": "57:Tennis"
+                  - "Competition": "1230:Gran Slam"
+                  - "Event": "520:French Open"
+                  - "Round": "1:"
+                  - "Disciplin": "2:"
+                  - "Gender": "57:Tennis"
+                  - "Sport": "57:Tennis"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 2"
+                start: "2000-01-02T20:00:00.00Z"
+                end: "2000-01-02T22:00:00.00Z"
+                source:
+                  site: "Paris"
+                  channel: 51
+                  routerSource: "https://.."
+                classification:
+                  - "Sport": "57:Tennis"
+                  - "Competition": "1230:Gran Slam"
+                  - "Event": "520:French Open"
+                  - "Round": "1:"
+                  - "Disciplin": "2:"
+                  - "Gender": "57:Tennis"
+                  - "Sport": "57:Tennis"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    get:
+      tags:
+      - Ingest Events
+      summary: "Find event(s) from the store"
+      description: "Returns a collection of events"
+      operationId: getEvents
+      produces:
+      - "application/json"
+      - "application/xml"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Event"
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    put:
+      tags:
+      - Ingest Events
+      summary: "Modify event(s) in the store with form data"
+      description: ""
+      operationId: updateEvents
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: body
+        name: body
+        description: "Event object that needs to be updated to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/EventUpdateDto"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Event"
+        405:
+          description: "Invalid input"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    delete:
+      tags:
+      - Ingest Events
+      summary: "Remove event(s) from the store"
+      description: ""
+      operationId: deleteEvents
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: body
+        name: body
+        description: "Event object that needs to be deleted from the store"
+        required: true
+        schema:
+          $ref: "#/definitions/EventDeleteDto"
+      responses:
+        204:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Event not found"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+  /events/{eventId}:
+    get:
+      tags:
+      - Ingest Events
+      summary: "Find an event by ID from the store"
+      description: "Returns a single event"
+      operationId: getEventById
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: path
+        name: eventId
+        description: "ID of event to return"
+        required: true
+        type: string
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Event"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Event not found"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    put:
+      tags:
+      - Ingest Events
+      summary: "Modify an event in the store with form data"
+      description: ""
+      operationId: updateEventById
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: path
+        name: eventId
+        description: "ID of event that needs to be updated"
+        required: true
+        type: string
+      - in: body
+        name: body
+        description: "Event object that needs to be updated to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/EventModel"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Event"
+        405:
+          description: "Invalid input"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    delete:
+      tags:
+      - Ingest Events
+      summary: "Remove an event from the store"
+      description: ""
+      operationId: deleteEventById
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: path
+        name: eventId
+        description: "Event id to delete"
+        required: true
+        type: string
+      responses:
+        204:
+          description: "successful operation"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Event not found"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+
+  /events/{eventId}/status/{status}:
+    put:
+      tags:
+      - Ingest Events
+      summary: "Modify an event status in the store"
+      description: ""
+      operationId: updateStatusById
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: path
+        name: eventId
+        description: "ID of event that status needs to be updated"
+        required: true
+        type: string
+      - in: path
+        name: status
+        description: "Status of event to be updated"
+        required: true
+        type: string
+        enum: ["Unknown", "Ready", "Cueing", "Cued", "Recording", "Done", "Failed"]
+      responses:
+        200:
+          description: "successful operation"
+        405:
+          description: "Invalid input"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+
+definitions:
+  Property:
+    type: object
+    properties:
+      Key: 
+        type: string
+        default: "ChannelId"
+      Value:
+        type: object
+      Type: 
+        type: string
+        enum:
+          - "System.String"
+          - "System.Boolean"
+  PropertyList:
+    type: array
+    items:
+      $ref: "#/definitions/Property"
+  ClassificationList:
+    type: array
+    items:
+      type: object
+  Schedule:
+      type: object
+      properties:
+        start: 
+          type: string
+          format: datetime
+        end:
+          type: string
+          format: datetime
+        repeat: 
+          type: string
+          default: "None"
+          enum:
+            - "None"
+            - "EveryDay"
+            - "EveryWeek"
+            - "EveryMonth"
+            - "EveryYear"
+        endBy:
+          type: string
+          format: date
+      # example:
+      #   start: "2019-09-25T06:35:10.00Z"
+      #   end: "2019-09-25T06:35:50.00Z"
+      #   repeat: "None"
+  EventSource:
+    type: object
+    properties:
+      site:
+        type: string
+      channel: 
+        type: string
+      routerSource:
+        type: string
+  # EventChannel:
+  #   type: object
+  #   properties: 
+  #     Instance: 
+  #       type: string
+  #     Properties:
+  #       $ref: "#/definitions/Properties"
+  # EventChannels:
+  #   type: array
+  #   items: 
+  #     $ref: "#/definitions/EventChannel"
+  EventCreate:
+    type: object
+    properties:
+      name:
+        type: string
+      source:
+        $ref: "#/definitions/EventSource"
+      start: 
+        type: string
+        format: datetime
+      end:
+        type: string
+        format: datetime
+      classification: 
+        $ref: "#/definitions/ClassificationList"
+    # example:
+    #   name: "Event 1"
+    #   source:
+    #     site: "London"
+    #     channel: 1
+    #     routerSource: "https://.."
+    #   start: "2019-09-25T06:35:10.00Z"
+    #   end: "2019-09-25T06:35:50.00Z"
+    #   classification:
+    #     - "Sport": "57:Tennis"
+    #     - "Competition": "1230:Gran Slam"
+    #     - "Event": "520:French Open"
+    #     - "Round": "1:"
+    #     - "Disciplin": "2:"
+    #     - "Gender": "57:Tennis"
+    #     - "Sport": "57:Tennis"
+  # EventCreateList:
+  #   type: array
+  #   items:
+  #       $ref: "#/definitions/EventCreate"
+  EventCreateDto:
+    type: array
+    required:
+      - events
+    items: 
+      properties:
+        series:
+          $ref: "#/definitions/Schedule"
+        events:
+          type: array
+          items:
+            $ref: "#/definitions/EventCreate"
+    example:
+      series:
+        start: "2000-01-01T20:00:00.00Z"
+        end: "2000-01-01T22:00:00.00Z"
+        repeat: "EveryDay"
+        endBy: "2000-01-02"
+      events:
+        - name: "Event 1"
+          start: "2000-01-01T20:00:00.00Z"
+          end: "2000-01-01T22:00:00.00Z"
+          source:
+            site: "London"
+            channel: 1
+            routerSource: "https://.."
+          classification:
+            - "Sport": "57:Tennis"
+            - "Competition": "1230:Gran Slam"
+            - "Event": "520:French Open"
+            - "Round": "1:"
+            - "Disciplin": "2:"
+            - "Gender": "57:Tennis"
+            - "Sport": "57:Tennis"
+        - name: "Event 1"
+          start: "2000-01-01T20:00:00.00Z"
+          end: "2000-01-01T22:00:00.00Z"
+          source:
+            site: "Paris"
+            channel: 51
+            routerSource: "https://.."
+          classification:
+            - "Sport": "57:Tennis"
+            - "Competition": "1230:Gran Slam"
+            - "Event": "520:French Open"
+            - "Round": "1:"
+            - "Disciplin": "2:"
+            - "Gender": "57:Tennis"
+            - "Sport": "57:Tennis"
+        - name: "Event 2"
+          start: "2000-01-02T20:00:00.00Z"
+          end: "2000-01-02T22:00:00.00Z"
+          source:
+            site: "London"
+            channel: 1
+            routerSource: "https://.."
+          classification:
+            - "Sport": "57:Tennis"
+            - "Competition": "1230:Gran Slam"
+            - "Event": "520:French Open"
+            - "Round": "1:"
+            - "Disciplin": "2:"
+            - "Gender": "57:Tennis"
+            - "Sport": "57:Tennis"
+        - name: "Event 2"
+          start: "2000-01-02T20:00:00.00Z"
+          end: "2000-01-02T22:00:00.00Z"
+          source:
+            site: "Paris"
+            channel: 51
+            routerSource: "https://.."
+          classification:
+            - "Sport": "57:Tennis"
+            - "Competition": "1230:Gran Slam"
+            - "Event": "520:French Open"
+            - "Round": "1:"
+            - "Disciplin": "2:"
+            - "Gender": "57:Tennis"
+            - "Sport": "57:Tennis"
+  EventUpdateDto:
+    type: object
+    required:
+      - events
+    properties:
+      series:
+        $ref: "#/definitions/SeriesModel"
+      events:
+        type: array
+        items:
+          $ref: "#/definitions/EventModel"
+  EventDeleteDto:
+    type: object
+    required:
+      - events
+    properties:
+      events:
+        type: array
+        items:
+          $ref: "#/definitions/DocumentBase"
+  
+  EventStatus:
+    type: string
+    enum: &EVENTSTATUS
+      - "Unknown"
+      - "Ready"
+      - "Cueing"
+      - "Cued"
+      - "Recording"
+      - "Done"
+      - "Failed"
+  DocumentBase:
+    type: object
+    required:
+      - _id
+      - _rev
+    properties:
+      _id:
+        type: string
+      _rev:
+        type: string
+      type:
+        type: string
+  SeriesModel:
+    allOf:
+      - $ref: '#/definitions/DocumentBase'
+      - $ref: '#/definitions/Schedule'
+    properties:
+      type: 
+        type: string
+        default: "series"
+  EventModel:
+    allOf:
+      - $ref: '#/definitions/DocumentBase'
+      - $ref: '#/definitions/EventCreate'
+    properties:
+      seriesId: 
+        type: string
+      status:
+        $ref: '#/definitions/EventStatus'
+      type: 
+        type: string
+        default: "event"
+  Event:
+    allOf:
+      - $ref: '#/definitions/EventModel'
+    type: object
+    required:
+    - series
+    properties:
+      series:
+        $ref: "#/definitions/SeriesModel"
+    xml:
+      name: "Event"
+  Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+responses:
+  GenericError:      # Can be referenced as '#/components/responses/GenericError'
+    description: An error occurred.
+    schema:
+      $ref: '#/definitions/Error'
+  400:
+    description: Bad Request
+    schema:
+      $ref: '#/definitions/Error'
+  401:
+    description: Unauthorized. OAuth2 token or scope is invalid.
+    schema:
+      $ref: '#/definitions/Error'
+  403:
+    description: Forbidden
+    schema:
+      $ref: '#/definitions/Error'
+  404:
+    description: Event not found.
+    schema:
+      $ref: '#/definitions/Error'
+  405:
+    description: Method not allowed.
+    schema:
+      $ref: '#/definitions/Error'
+  500:
+    description: Microservice failure, please retry.
+    schema:
+      $ref: '#/definitions/Error'
+  501:
+    description: Not implemented. This endpoint is read-only.
+    schema:
+      $ref: '#/definitions/Error'
+  502:
+    description: Microservice timeout, please retry.
+    schema:
+      $ref: '#/definitions/Error'
