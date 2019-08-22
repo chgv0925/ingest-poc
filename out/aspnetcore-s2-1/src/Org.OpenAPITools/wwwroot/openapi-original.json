@@ -1,0 +1,1241 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "GV.SCS.Store.Ingest",
+    "description" : "Store for ingest",
+    "version" : "0.0.1"
+  },
+  "servers" : [ {
+    "url" : "https://localhost/scs-store/ingest"
+  } ],
+  "tags" : [ {
+    "name" : "Ingest Events",
+    "description" : "Store for ingest events"
+  } ],
+  "paths" : {
+    "/events" : {
+      "get" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Find event(s) from the store",
+        "description" : "Returns a collection of events",
+        "operationId" : "getEvents",
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Event not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Modify event(s) in the store with form data",
+        "operationId" : "updateEvents",
+        "requestBody" : {
+          "description" : "Event object that needs to be updated to the store",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventUpdateDto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      },
+      "post" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Add new event(s) to the store",
+        "operationId" : "addEvent",
+        "requestBody" : {
+          "description" : "Event object that needs to be added to the store",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventCreateDto"
+              }
+            },
+            "application/xml" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventCreateDto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "example" : [ {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 1",
+                    "start" : "2000-01-01T20:00:00.00Z",
+                    "end" : "2000-01-01T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  }, {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 1",
+                    "start" : "2000-01-01T20:00:00.00Z",
+                    "end" : "2000-01-01T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  }, {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 2",
+                    "start" : "2000-01-02T20:00:00.00Z",
+                    "end" : "2000-01-02T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  }, {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 2",
+                    "start" : "2000-01-02T20:00:00.00Z",
+                    "end" : "2000-01-02T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  } ],
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "type" : "array",
+                  "example" : [ {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 1",
+                    "start" : "2000-01-01T20:00:00.00Z",
+                    "end" : "2000-01-01T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  }, {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 1",
+                    "start" : "2000-01-01T20:00:00.00Z",
+                    "end" : "2000-01-01T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  }, {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 2",
+                    "start" : "2000-01-02T20:00:00.00Z",
+                    "end" : "2000-01-02T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  }, {
+                    "_id" : "uniqueEventId",
+                    "_rev" : "1-..",
+                    "type" : "event",
+                    "name" : "Event 2",
+                    "start" : "2000-01-02T20:00:00.00Z",
+                    "end" : "2000-01-02T22:00:00.00Z",
+                    "source" : {
+                      "channel" : "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit",
+                      "routerSource" : "https://.."
+                    },
+                    "classification" : [ {
+                      "Sport" : "57:Tennis"
+                    }, {
+                      "Competition" : "1230:Gran Slam"
+                    }, {
+                      "Event" : "520:French Open"
+                    }, {
+                      "Round" : "1:"
+                    }, {
+                      "Disciplin" : "2:"
+                    }, {
+                      "Gender" : "57:Tennis"
+                    }, {
+                      "Sport" : "57:Tennis"
+                    } ],
+                    "seriesId" : "seriesId",
+                    "series" : {
+                      "_id" : "seriesId",
+                      "_rev" : "1-..",
+                      "type" : "series",
+                      "start" : "2000-01-01T20:00:00.00Z",
+                      "end" : "2000-01-01T22:00:00.00Z",
+                      "repeat" : "EveryDay",
+                      "endBy" : "2000-01-02"
+                    },
+                    "status" : "Ready"
+                  } ],
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Bad Request",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Event not found.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Method not allowed.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500" : {
+            "description" : "Microservice failure, please retry.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "501" : {
+            "description" : "Not implemented. This endpoint is read-only.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502" : {
+            "description" : "Microservice timeout, please retry.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "An error occurred.",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      },
+      "delete" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Remove event(s) from the store",
+        "operationId" : "deleteEvents",
+        "requestBody" : {
+          "description" : "Event object that needs to be deleted from the store",
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventDeleteDto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "successful operation",
+            "content" : { }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Event not found",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      }
+    },
+    "/events/{eventId}" : {
+      "get" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Find an event by ID from the store",
+        "description" : "Returns a single event",
+        "operationId" : "getEventById",
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of event to return",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Event not found",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ]
+      },
+      "put" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Modify an event in the store with form data",
+        "operationId" : "updateEventById",
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of event that needs to be updated",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "description" : "Event object that needs to be updated to the store",
+          "content" : {
+            "application/x-www-form-urlencoded" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EventModel"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              },
+              "application/xml" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "405" : {
+            "description" : "Invalid input",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ],
+        "x-codegen-request-body-name" : "body"
+      },
+      "delete" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Remove an event from the store",
+        "operationId" : "deleteEventById",
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "Event id to delete",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "successful operation",
+            "content" : { }
+          },
+          "400" : {
+            "description" : "Invalid ID supplied",
+            "content" : { }
+          },
+          "404" : {
+            "description" : "Event not found",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ]
+      }
+    },
+    "/events/{eventId}/status/{status}" : {
+      "put" : {
+        "tags" : [ "Ingest Events" ],
+        "summary" : "Modify an event status in the store",
+        "operationId" : "updateStatusById",
+        "parameters" : [ {
+          "name" : "eventId",
+          "in" : "path",
+          "description" : "ID of event that status needs to be updated",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "status",
+          "in" : "path",
+          "description" : "Status of event to be updated",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "Unknown", "Ready", "Cueing", "Cued", "Recording", "Done", "Failed" ]
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "successful operation",
+            "content" : { }
+          },
+          "405" : {
+            "description" : "Invalid input",
+            "content" : { }
+          }
+        },
+        "security" : [ {
+          "scs_auth" : [ "platform", "platform.readonly" ]
+        } ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Property" : {
+        "type" : "object",
+        "properties" : {
+          "Key" : {
+            "type" : "string",
+            "default" : "ChannelId"
+          },
+          "Value" : {
+            "type" : "object",
+            "properties" : { }
+          },
+          "Type" : {
+            "type" : "string",
+            "enum" : [ "System.String", "System.Boolean" ]
+          }
+        }
+      },
+      "PropertyList" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Property"
+        }
+      },
+      "ClassificationList" : {
+        "type" : "array",
+        "items" : {
+          "type" : "object",
+          "properties" : { }
+        }
+      },
+      "Schedule" : {
+        "type" : "object",
+        "properties" : {
+          "start" : {
+            "type" : "string",
+            "format" : "datetime"
+          },
+          "end" : {
+            "type" : "string",
+            "format" : "datetime"
+          },
+          "repeat" : {
+            "type" : "string",
+            "enum" : [ "None", "EveryDay", "EveryWeek", "EveryMonth", "EveryYear" ],
+            "default" : "None"
+          },
+          "endBy" : {
+            "type" : "string",
+            "format" : "date"
+          }
+        }
+      },
+      "RegisteredType" : {
+        "type" : "object",
+        "properties" : {
+          "category" : {
+            "type" : "string"
+          },
+          "format" : {
+            "type" : "string"
+          }
+        }
+      },
+      "URI" : {
+        "type" : "object",
+        "properties" : {
+          "url" : {
+            "$ref" : "#/components/schemas/URI_url"
+          },
+          "registeredType" : {
+            "$ref" : "#/components/schemas/RegisteredType"
+          }
+        }
+      },
+      "EventSource" : {
+        "type" : "object",
+        "properties" : {
+          "channel" : {
+            "type" : "string"
+          },
+          "routerSource" : {
+            "type" : "string"
+          }
+        }
+      },
+      "EventCreate" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "source" : {
+            "$ref" : "#/components/schemas/EventSource"
+          },
+          "start" : {
+            "type" : "string",
+            "format" : "datetime"
+          },
+          "end" : {
+            "type" : "string",
+            "format" : "datetime"
+          },
+          "classification" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "properties" : { }
+            }
+          },
+          "isCrash" : {
+            "type" : "boolean",
+            "default" : false
+          },
+          "isAutoAssigned" : {
+            "type" : "boolean",
+            "default" : false
+          },
+          "properties" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Property"
+            }
+          }
+        }
+      },
+      "EventCreateDto" : {
+        "type" : "array",
+        "example" : {
+          "series" : {
+            "start" : "2000-01-01T20:00:00.00Z",
+            "end" : "2000-01-01T22:00:00.00Z",
+            "repeat" : "EveryDay",
+            "endBy" : "2000-01-02"
+          },
+          "events" : [ {
+            "name" : "Event 1",
+            "start" : "2000-01-01T20:00:00.00Z",
+            "end" : "2000-01-01T22:00:00.00Z",
+            "source" : {
+              "channel" : "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit",
+              "routerSource" : "https://.."
+            },
+            "classification" : [ {
+              "Sport" : "57:Tennis"
+            }, {
+              "Competition" : "1230:Gran Slam"
+            }, {
+              "Event" : "520:French Open"
+            }, {
+              "Round" : "1:"
+            }, {
+              "Disciplin" : "2:"
+            }, {
+              "Gender" : "57:Tennis"
+            }, {
+              "Sport" : "57:Tennis"
+            } ]
+          }, {
+            "name" : "Event 1",
+            "start" : "2000-01-01T20:00:00.00Z",
+            "end" : "2000-01-01T22:00:00.00Z",
+            "source" : {
+              "channel" : "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit",
+              "routerSource" : "https://.."
+            },
+            "classification" : [ {
+              "Sport" : "57:Tennis"
+            }, {
+              "Competition" : "1230:Gran Slam"
+            }, {
+              "Event" : "520:French Open"
+            }, {
+              "Round" : "1:"
+            }, {
+              "Disciplin" : "2:"
+            }, {
+              "Gender" : "57:Tennis"
+            }, {
+              "Sport" : "57:Tennis"
+            } ]
+          }, {
+            "name" : "Event 2",
+            "start" : "2000-01-02T20:00:00.00Z",
+            "end" : "2000-01-02T22:00:00.00Z",
+            "source" : {
+              "channel" : "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit",
+              "routerSource" : "https://.."
+            },
+            "classification" : [ {
+              "Sport" : "57:Tennis"
+            }, {
+              "Competition" : "1230:Gran Slam"
+            }, {
+              "Event" : "520:French Open"
+            }, {
+              "Round" : "1:"
+            }, {
+              "Disciplin" : "2:"
+            }, {
+              "Gender" : "57:Tennis"
+            }, {
+              "Sport" : "57:Tennis"
+            } ]
+          }, {
+            "name" : "Event 2",
+            "start" : "2000-01-02T20:00:00.00Z",
+            "end" : "2000-01-02T22:00:00.00Z",
+            "source" : {
+              "channel" : "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit",
+              "routerSource" : "https://.."
+            },
+            "classification" : [ {
+              "Sport" : "57:Tennis"
+            }, {
+              "Competition" : "1230:Gran Slam"
+            }, {
+              "Event" : "520:French Open"
+            }, {
+              "Round" : "1:"
+            }, {
+              "Disciplin" : "2:"
+            }, {
+              "Gender" : "57:Tennis"
+            }, {
+              "Sport" : "57:Tennis"
+            } ]
+          } ]
+        },
+        "items" : {
+          "type" : "object",
+          "properties" : {
+            "series" : {
+              "$ref" : "#/components/schemas/Schedule"
+            },
+            "events" : {
+              "type" : "array",
+              "items" : {
+                "$ref" : "#/components/schemas/EventCreate"
+              }
+            }
+          }
+        }
+      },
+      "EventUpdateDto" : {
+        "required" : [ "events" ],
+        "type" : "object",
+        "properties" : {
+          "series" : {
+            "$ref" : "#/components/schemas/SeriesModel"
+          },
+          "events" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/EventModel"
+            }
+          }
+        }
+      },
+      "EventDeleteDto" : {
+        "required" : [ "events" ],
+        "type" : "object",
+        "properties" : {
+          "events" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DocumentBase"
+            }
+          }
+        },
+        "example" : {
+          "events" : [ {
+            "_rev" : "_rev",
+            "_id" : "_id",
+            "type" : "type"
+          }, {
+            "_rev" : "_rev",
+            "_id" : "_id",
+            "type" : "type"
+          } ]
+        }
+      },
+      "EventStatus" : {
+        "type" : "string",
+        "enum" : [ "Unknown", "Ready", "Cueing", "Cued", "Recording", "Done", "Failed" ]
+      },
+      "DocumentBase" : {
+        "required" : [ "_id", "_rev" ],
+        "type" : "object",
+        "properties" : {
+          "_id" : {
+            "type" : "string"
+          },
+          "_rev" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "example" : {
+          "_rev" : "_rev",
+          "_id" : "_id",
+          "type" : "type"
+        }
+      },
+      "SeriesModel" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/DocumentBase"
+        }, {
+          "$ref" : "#/components/schemas/Schedule"
+        } ]
+      },
+      "EventModel" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/DocumentBase"
+        }, {
+          "$ref" : "#/components/schemas/EventCreate"
+        } ]
+      },
+      "Event" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/EventModel"
+        } ]
+      },
+      "Error" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "URI_url" : {
+        "properties" : {
+          "domain" : {
+            "type" : "string"
+          },
+          "device" : {
+            "type" : "string"
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "asset" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "responses" : {
+      "400" : {
+        "description" : "Bad Request",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "401" : {
+        "description" : "Unauthorized. OAuth2 token or scope is invalid.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "403" : {
+        "description" : "Forbidden",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "404" : {
+        "description" : "Event not found.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "405" : {
+        "description" : "Method not allowed.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "500" : {
+        "description" : "Microservice failure, please retry.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "501" : {
+        "description" : "Not implemented. This endpoint is read-only.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "502" : {
+        "description" : "Microservice timeout, please retry.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "GenericError" : {
+        "description" : "An error occurred.",
+        "content" : {
+          "*/*" : {
+            "schema" : {
+              "$ref" : "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "scs_auth" : {
+        "type" : "oauth2",
+        "flows" : {
+          "authorizationCode" : {
+            "authorizationUrl" : "https://scs-newbury.gvnewsdev.com/identity/connect/authorize",
+            "tokenUrl" : "https://scs-newbury.gvnewsdev.com/identity/connect/token",
+            "scopes" : {
+              "platform.readonly" : "Read access to SCS Ingest Store.",
+              "platform" : "Read/write access to SCS Ingest Store."
+            }
+          }
+        }
+      }
+    }
+  }
+}

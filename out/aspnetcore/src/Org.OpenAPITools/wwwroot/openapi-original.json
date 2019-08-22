@@ -1,0 +1,338 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Swagger Eventstore",
+    "description" : "A sample API that uses a eventstore as an example to demonstrate features in the OpenAPI 3.0 specification",
+    "termsOfService" : "http://swagger.io/terms/",
+    "contact" : {
+      "name" : "Swagger API Team",
+      "url" : "http://swagger.io",
+      "email" : "apiteam@swagger.io"
+    },
+    "license" : {
+      "name" : "Apache 2.0",
+      "url" : "https://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version" : "1.0.0"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:5000/ingest/{version}",
+    "description" : "The local server",
+    "variables" : {
+      "version" : {
+        "enum" : [ "v1", "v2" ],
+        "default" : "v2"
+      }
+    }
+  }, {
+    "url" : "http://{subdomain}.site.com/ingest/{version}",
+    "description" : "The main prod server",
+    "variables" : {
+      "subdomain" : {
+        "default" : "production"
+      },
+      "version" : {
+        "enum" : [ "v1", "v2" ],
+        "default" : "v2"
+      }
+    }
+  } ],
+  "paths" : {
+    "/events" : {
+      "get" : {
+        "description" : "Returns all events from the system that the user has access to.\n",
+        "operationId" : "findEvents",
+        "parameters" : [ {
+          "name" : "tags",
+          "in" : "query",
+          "description" : "tags to filter by",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "name" : "limit",
+          "in" : "query",
+          "description" : "maximum number of results to return",
+          "required" : false,
+          "style" : "form",
+          "explode" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "event response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "description" : "Creates a new event in the store.  Duplicates are allowed",
+        "operationId" : "addEvent",
+        "requestBody" : {
+          "description" : "Event to add to the store",
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateEventDto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "event response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/{id}" : {
+      "get" : {
+        "description" : "Returns a user based on a single ID, if the user does not have access to the event",
+        "operationId" : "findEventById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of event to fetch",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "event response",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "default" : {
+            "description" : "unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "description" : "deletes a single event based on the ID supplied",
+        "operationId" : "deleteEvent",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "ID of event to delete",
+          "required" : true,
+          "style" : "simple",
+          "explode" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "event deleted"
+          },
+          "default" : {
+            "description" : "unexpected error",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "Property" : {
+        "required" : [ "Key", "Value" ],
+        "type" : "object",
+        "properties" : {
+          "Key" : {
+            "type" : "string"
+          },
+          "Value" : {
+            "type" : "object"
+          },
+          "Type" : {
+            "type" : "string",
+            "enum" : [ "System.String", "System.Integer", "System.Boolean" ]
+          }
+        }
+      },
+      "PropertyList" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/Property"
+        }
+      },
+      "EventChannel" : {
+        "type" : "object",
+        "properties" : {
+          "Instance" : {
+            "type" : "string"
+          },
+          "Properties" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Property"
+            }
+          }
+        }
+      },
+      "EventChannelList" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/EventChannel"
+        }
+      },
+      "CreateEventDto" : {
+        "type" : "object",
+        "properties" : {
+          "Id" : {
+            "type" : "string",
+            "format" : "uuid"
+          },
+          "EventChannels" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/EventChannel"
+            }
+          },
+          "Properties" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Property"
+            }
+          }
+        },
+        "example" : {
+          "Id" : "{uuid}",
+          "EventChannels" : [ {
+            "Instance" : "Main",
+            "Properties" : [ {
+              "Key" : "ChannelId",
+              "Value" : "{channelId}"
+            }, {
+              "Key" : "ClipLocation",
+              "Value" : "default",
+              "Type" : "System.String"
+            }, {
+              "Key" : "IsAutoAssigned",
+              "Value" : false
+            } ]
+          } ],
+          "Properties" : [ {
+            "Key" : "Type",
+            "Value" : "Feed"
+          }, {
+            "Key" : "ChannelType",
+            "Value" : "PlayerRecorder"
+          }, {
+            "Key" : "Name",
+            "Value" : "SFeed_{uuid}"
+          }, {
+            "Key" : "StartDateTime",
+            "Value" : "2019-09-25T06:35:10.00Z"
+          }, {
+            "Key" : "EndDateTime",
+            "Value" : "2019-09-25T06:35:50.00Z"
+          }, {
+            "Key" : "IsCrash",
+            "Value" : false
+          } ]
+        }
+      },
+      "Event" : {
+        "allOf" : [ {
+          "$ref" : "#/components/schemas/CreateEventDto"
+        }, {
+          "$ref" : "#/components/schemas/Event_allOf"
+        } ]
+      },
+      "Error" : {
+        "required" : [ "code", "message" ],
+        "type" : "object",
+        "properties" : {
+          "code" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Event_allOf" : {
+        "required" : [ "Id" ],
+        "properties" : {
+          "Id" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        }
+      }
+    }
+  }
+}

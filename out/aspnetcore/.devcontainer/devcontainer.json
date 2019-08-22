@@ -1,0 +1,16 @@
+// See https://aka.ms/vscode-remote/devcontainer.json for format details.
+{
+	"name": "C# (.NET Core 2.2)",
+	"image": "vsc-dev-dotnetcore",
+	"appPort": 7071,
+
+	// Uncomment the next line if you want to add in default container specific settings.json values
+	// "settings":  { "workbench.colorTheme": "Quiet Light" },
+
+	// Uncomment the next line to run commands after the container is created.
+	"postCreateCommand": "dotnet restore",
+
+	"extensions": [
+		"ms-vscode.csharp"
+	]
+}

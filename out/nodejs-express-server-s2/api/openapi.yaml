@@ -1,0 +1,902 @@
+openapi: 3.0.1
+info:
+  description: Store for ingest
+  title: GV.SCS.Store.Ingest
+  version: 0.0.1
+servers:
+- url: https://localhost/scs-store/ingest
+- url: http://localhost/scs-store/ingest
+tags:
+- description: Store for ingest events
+  name: Ingest Events
+paths:
+  /events:
+    delete:
+      operationId: deleteEvents
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/EventDeleteDto'
+        description: Event object that needs to be deleted from the store
+        required: true
+      responses:
+        204:
+          content: {}
+          description: successful operation
+        400:
+          content: {}
+          description: Invalid ID supplied
+        404:
+          content: {}
+          description: Event not found
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Remove event(s) from the store
+      tags:
+      - Ingest Events
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+    get:
+      description: Returns a collection of events
+      operationId: getEvents
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+            application/xml:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Event not found.
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Find event(s) from the store
+      tags:
+      - Ingest Events
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+    post:
+      operationId: addEvent
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EventCreateDto'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/EventCreateDto'
+        description: Event object that needs to be added to the store
+        required: true
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                example:
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 1
+                  start: 2000-01-01T20:00:00.00Z
+                  end: 2000-01-01T22:00:00.00Z
+                  source:
+                    channel: 8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 1
+                  start: 2000-01-01T20:00:00.00Z
+                  end: 2000-01-01T22:00:00.00Z
+                  source:
+                    channel: 66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 2
+                  start: 2000-01-02T20:00:00.00Z
+                  end: 2000-01-02T22:00:00.00Z
+                  source:
+                    channel: 8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 2
+                  start: 2000-01-02T20:00:00.00Z
+                  end: 2000-01-02T22:00:00.00Z
+                  source:
+                    channel: 66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+            application/xml:
+              schema:
+                example:
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 1
+                  start: 2000-01-01T20:00:00.00Z
+                  end: 2000-01-01T22:00:00.00Z
+                  source:
+                    channel: 8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 1
+                  start: 2000-01-01T20:00:00.00Z
+                  end: 2000-01-01T22:00:00.00Z
+                  source:
+                    channel: 66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 2
+                  start: 2000-01-02T20:00:00.00Z
+                  end: 2000-01-02T22:00:00.00Z
+                  source:
+                    channel: 8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                - _id: uniqueEventId
+                  _rev: 1-..
+                  type: event
+                  name: Event 2
+                  start: 2000-01-02T20:00:00.00Z
+                  end: 2000-01-02T22:00:00.00Z
+                  source:
+                    channel: 66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit
+                    routerSource: https://..
+                  classification:
+                  - Sport: 57:Tennis
+                  - Competition: 1230:Gran Slam
+                  - Event: 520:French Open
+                  - Round: '1:'
+                  - Disciplin: '2:'
+                  - Gender: 57:Tennis
+                  - Sport: 57:Tennis
+                  seriesId: seriesId
+                  series:
+                    _id: seriesId
+                    _rev: 1-..
+                    type: series
+                    start: 2000-01-01T20:00:00.00Z
+                    end: 2000-01-01T22:00:00.00Z
+                    repeat: EveryDay
+                    endBy: 2000-01-02
+                  status: Ready
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+          description: successful operation
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Bad Request
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Event not found.
+        405:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Method not allowed.
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Microservice failure, please retry.
+        501:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Not implemented. This endpoint is read-only.
+        502:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: Microservice timeout, please retry.
+        default:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
+          description: An error occurred.
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Add new event(s) to the store
+      tags:
+      - Ingest Events
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+    put:
+      operationId: updateEvents
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventUpdateDto'
+        description: Event object that needs to be updated to the store
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+            application/xml:
+              schema:
+                items:
+                  $ref: '#/components/schemas/Event'
+                type: array
+          description: successful operation
+        405:
+          content: {}
+          description: Invalid input
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Modify event(s) in the store with form data
+      tags:
+      - Ingest Events
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+  /events/{eventId}:
+    delete:
+      operationId: deleteEventById
+      parameters:
+      - description: Event id to delete
+        in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          content: {}
+          description: successful operation
+        400:
+          content: {}
+          description: Invalid ID supplied
+        404:
+          content: {}
+          description: Event not found
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Remove an event from the store
+      tags:
+      - Ingest Events
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+    get:
+      description: Returns a single event
+      operationId: getEventById
+      parameters:
+      - description: ID of event to return
+        in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: successful operation
+        400:
+          content: {}
+          description: Invalid ID supplied
+        404:
+          content: {}
+          description: Event not found
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Find an event by ID from the store
+      tags:
+      - Ingest Events
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+    put:
+      operationId: updateEventById
+      parameters:
+      - description: ID of event that needs to be updated
+        in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/EventModel'
+        description: Event object that needs to be updated to the store
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Event'
+          description: successful operation
+        405:
+          content: {}
+          description: Invalid input
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Modify an event in the store with form data
+      tags:
+      - Ingest Events
+      x-codegen-request-body-name: body
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+  /events/{eventId}/status/{status}:
+    put:
+      operationId: updateStatusById
+      parameters:
+      - description: ID of event that status needs to be updated
+        in: path
+        name: eventId
+        required: true
+        schema:
+          type: string
+      - description: Status of event to be updated
+        in: path
+        name: status
+        required: true
+        schema:
+          enum:
+          - Unknown
+          - Ready
+          - Cueing
+          - Cued
+          - Recording
+          - Done
+          - Failed
+          type: string
+      responses:
+        200:
+          content: {}
+          description: successful operation
+        405:
+          content: {}
+          description: Invalid input
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+      summary: Modify an event status in the store
+      tags:
+      - Ingest Events
+      x-openapi-router-controller: IngestEventsController
+      x-openapi-router-service: IngestEventsService
+components:
+  responses:
+    400:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Bad Request
+    401:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Unauthorized. OAuth2 token or scope is invalid.
+    403:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Forbidden
+    404:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Event not found.
+    405:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Method not allowed.
+    500:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Microservice failure, please retry.
+    501:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Not implemented. This endpoint is read-only.
+    502:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: Microservice timeout, please retry.
+    GenericError:
+      content:
+        '*/*':
+          schema:
+            $ref: '#/components/schemas/Error'
+      description: An error occurred.
+  schemas:
+    Property:
+      properties:
+        Key:
+          default: ChannelId
+          type: string
+        Value:
+          properties: {}
+          type: object
+        Type:
+          enum:
+          - System.String
+          - System.Boolean
+          type: string
+      type: object
+    PropertyList:
+      items:
+        $ref: '#/components/schemas/Property'
+      type: array
+    ClassificationList:
+      items:
+        properties: {}
+        type: object
+      type: array
+    Schedule:
+      properties:
+        start:
+          format: datetime
+          type: string
+        end:
+          format: datetime
+          type: string
+        repeat:
+          default: None
+          enum:
+          - None
+          - EveryDay
+          - EveryWeek
+          - EveryMonth
+          - EveryYear
+          type: string
+        endBy:
+          format: date
+          type: string
+      type: object
+    RegisteredType:
+      properties:
+        category:
+          type: string
+        format:
+          type: string
+      type: object
+    URI:
+      properties:
+        url:
+          $ref: '#/components/schemas/URI_url'
+        registeredType:
+          $ref: '#/components/schemas/RegisteredType'
+      type: object
+    EventSource:
+      properties:
+        channel:
+          type: string
+        routerSource:
+          type: string
+      type: object
+    EventCreate:
+      properties:
+        name:
+          type: string
+        source:
+          $ref: '#/components/schemas/EventSource'
+        start:
+          format: datetime
+          type: string
+        end:
+          format: datetime
+          type: string
+        classification:
+          items:
+            properties: {}
+            type: object
+          type: array
+        isCrash:
+          default: false
+          type: boolean
+        isAutoAssigned:
+          default: false
+          type: boolean
+        properties:
+          items:
+            $ref: '#/components/schemas/Property'
+          type: array
+      type: object
+    EventCreateDto:
+      example:
+        series:
+          start: 2000-01-01T20:00:00.00Z
+          end: 2000-01-01T22:00:00.00Z
+          repeat: EveryDay
+          endBy: 2000-01-02
+        events:
+        - name: Event 1
+          start: 2000-01-01T20:00:00.00Z
+          end: 2000-01-01T22:00:00.00Z
+          source:
+            channel: 8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit
+            routerSource: https://..
+          classification:
+          - Sport: 57:Tennis
+          - Competition: 1230:Gran Slam
+          - Event: 520:French Open
+          - Round: '1:'
+          - Disciplin: '2:'
+          - Gender: 57:Tennis
+          - Sport: 57:Tennis
+        - name: Event 1
+          start: 2000-01-01T20:00:00.00Z
+          end: 2000-01-01T22:00:00.00Z
+          source:
+            channel: 66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit
+            routerSource: https://..
+          classification:
+          - Sport: 57:Tennis
+          - Competition: 1230:Gran Slam
+          - Event: 520:French Open
+          - Round: '1:'
+          - Disciplin: '2:'
+          - Gender: 57:Tennis
+          - Sport: 57:Tennis
+        - name: Event 2
+          start: 2000-01-02T20:00:00.00Z
+          end: 2000-01-02T22:00:00.00Z
+          source:
+            channel: 8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit
+            routerSource: https://..
+          classification:
+          - Sport: 57:Tennis
+          - Competition: 1230:Gran Slam
+          - Event: 520:French Open
+          - Round: '1:'
+          - Disciplin: '2:'
+          - Gender: 57:Tennis
+          - Sport: 57:Tennis
+        - name: Event 2
+          start: 2000-01-02T20:00:00.00Z
+          end: 2000-01-02T22:00:00.00Z
+          source:
+            channel: 66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit
+            routerSource: https://..
+          classification:
+          - Sport: 57:Tennis
+          - Competition: 1230:Gran Slam
+          - Event: 520:French Open
+          - Round: '1:'
+          - Disciplin: '2:'
+          - Gender: 57:Tennis
+          - Sport: 57:Tennis
+      items:
+        properties:
+          series:
+            $ref: '#/components/schemas/Schedule'
+          events:
+            items:
+              $ref: '#/components/schemas/EventCreate'
+            type: array
+        type: object
+      type: array
+    EventUpdateDto:
+      properties:
+        series:
+          $ref: '#/components/schemas/SeriesModel'
+        events:
+          items:
+            $ref: '#/components/schemas/EventModel'
+          type: array
+      required:
+      - events
+      type: object
+    EventDeleteDto:
+      example:
+        events:
+        - _rev: _rev
+          _id: _id
+          type: type
+        - _rev: _rev
+          _id: _id
+          type: type
+      properties:
+        events:
+          items:
+            $ref: '#/components/schemas/DocumentBase'
+          type: array
+      required:
+      - events
+      type: object
+    EventStatus:
+      enum:
+      - Unknown
+      - Ready
+      - Cueing
+      - Cued
+      - Recording
+      - Done
+      - Failed
+      type: string
+    DocumentBase:
+      example:
+        _rev: _rev
+        _id: _id
+        type: type
+      properties:
+        _id:
+          type: string
+        _rev:
+          type: string
+        type:
+          type: string
+      required:
+      - _id
+      - _rev
+      type: object
+    SeriesModel:
+      allOf:
+      - $ref: '#/components/schemas/DocumentBase'
+      - $ref: '#/components/schemas/Schedule'
+    EventModel:
+      allOf:
+      - $ref: '#/components/schemas/DocumentBase'
+      - $ref: '#/components/schemas/EventCreate'
+    Event:
+      allOf:
+      - $ref: '#/components/schemas/EventModel'
+    Error:
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    URI_url:
+      properties:
+        domain:
+          type: string
+        device:
+          type: string
+        location:
+          type: string
+        asset:
+          type: string
+  securitySchemes:
+    scs_auth:
+      flows:
+        authorizationCode:
+          authorizationUrl: https://scs-newbury.gvnewsdev.com/identity/connect/authorize
+          scopes:
+            platform.readonly: Read access to SCS Ingest Store.
+            platform: Read/write access to SCS Ingest Store.
+          tokenUrl: https://scs-newbury.gvnewsdev.com/identity/connect/token
+      type: oauth2
