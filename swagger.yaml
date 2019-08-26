@@ -423,7 +423,8 @@ definitions:
         description: "The value of the KeyValuePair."
       Type: 
         type: string
-        description: "The type of value in the KeyValuePair."
+        description: "The type of value in the KeyValuePair. Default to String type."
+        default: "System.String"
         enum:
           - "System.String"
           - "System.Boolean"
@@ -432,33 +433,32 @@ definitions:
     description: "A collection of custom metadata."
     items:
       $ref: "#/definitions/Property"
-      description: "The collection of Property."
-  KeyValuePair:
-    type: object
-    properties:
-      Key: 
-        type: string
-      Value:
-        type: object
-  ClassificationList:
-    type: array
-    items:
-      $ref: "#/definitions/Property"
-    example:
-      - Key: "Sport" 
-        Value: "57:Tennis"
-      - Key: "Competition" 
-        Value: "1230:Gran Slam"
-      - Key: "Event" 
-        Value: "520:French Open"
-      - Key: "Round" 
-        Value: "1:"
-      - Key: "Disciplin" 
-        Value: "2:"
-      - Key: "Gender" 
-        Value: "57:Tennis"
-      - Key: "Age" 
-        Value: "17"
+  # KeyValuePair:
+  #   type: object
+  #   properties:
+  #     Key: 
+  #       type: string
+  #     Value:
+  #       type: object
+  # ClassificationList:
+  #   type: array
+  #   items:
+  #     $ref: "#/definitions/Property"
+  #   example:
+  #     - Key: "Sport" 
+  #       Value: "57:Tennis"
+  #     - Key: "Competition" 
+  #       Value: "1230:Gran Slam"
+  #     - Key: "Event" 
+  #       Value: "520:French Open"
+  #     - Key: "Round" 
+  #       Value: "1:"
+  #     - Key: "Disciplin" 
+  #       Value: "2:"
+  #     - Key: "Gender" 
+  #       Value: "57:Tennis"
+  #     - Key: "Age" 
+  #       Value: "17"
   Schedule:
       type: object
       description: "For scheduling ingest event, containing information of recursive events."
