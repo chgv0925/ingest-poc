@@ -1,33 +1,33 @@
-swagger: "2.0"
+swagger: '2.0'
 info:
-  description: "This is a sample server Eventstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
-  version: "1.0.0"
-  title: "Swagger Eventstore"
-  termsOfService: "http://swagger.io/terms/"
-  contact:
-    email: "apiteam@swagger.io"
-  license:
-    name: "Apache 2.0"
-    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
-host: "10.251.52.230"
-basePath: "/feedingest/v1/ingest"
-tags:
-- name: "event"
-  description: "Everything about your events"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
+  title: GV.SCS.Store.Ingest
+  description: This API is used to maintain ingest event store.
+  version: 0.0.1
+host: localhost #scs-newbury.gvnewsdev.com
+basePath: /scs-store/ingest
 schemes:
-- "http"
-- "https"
+  - https
+  - http
+securityDefinitions:
+  scs_auth:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: 'https://scs-newbury.gvnewsdev.com/identity/connect/authorize'
+    tokenUrl: 'https://scs-newbury.gvnewsdev.com/identity/connect/token'
+    scopes:
+      platform.readonly: Read access to SCS Ingest Store.
+      platform: Read/write access to SCS Ingest Store.
+tags:
+  - name: Ingest Events
+    description: Store for ingest events
 paths:
   /events:
     post:
       tags:
-      - "event"
-      summary: "Add a new event to the store"
-      description: ""
-      operationId: "addEvent"
+      - Ingest Events
+      summary: "Add new event(s) to the store"
+      description: "This method is used to insert one or more ingest event(s) into store."
+      operationId: addEvent
       consumes:
       - "application/json"
       - "application/xml"
@@ -35,39 +35,275 @@ paths:
       - "application/json"
       - "application/xml"
       parameters:
-      - in: "body"
-        name: "body"
+      - in: body
+        name: body
         description: "Event object that needs to be added to the store"
         required: true
         schema:
-          $ref: "#/definitions/CreateEventDto"
+          $ref: "#/definitions/EventCreateDto"
       responses:
+        201:
+          description: "Operation successful."
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Event"
+            example:
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 1"
+                start: "2000-01-01T20:00:00.00Z"
+                end: "2000-01-01T22:00:00.00Z"
+                source:
+                  channel: "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit"
+                  routerSource: "https://.."
+                classification:
+                  - Key: "Sport" 
+                    Value: "57:Tennis"
+                  - Key: "Competition" 
+                    Value: "1230:Gran Slam"
+                  - Key: "Event" 
+                    Value: "520:French Open"
+                  - Key: "Round" 
+                    Value: "1:"
+                  - Key: "Disciplin" 
+                    Value: "2:"
+                  - Key: "Gender" 
+                    Value: "57:Tennis"
+                  - Key: "Age" 
+                    Value: "17"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 1"
+                start: "2000-01-01T20:00:00.00Z"
+                end: "2000-01-01T22:00:00.00Z"
+                source:
+                  channel: "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit"
+                  routerSource: "https://.."
+                classification:
+                  - Key: "Sport" 
+                    Value: "57:Tennis"
+                  - Key: "Competition" 
+                    Value: "1230:Gran Slam"
+                  - Key: "Event" 
+                    Value: "520:French Open"
+                  - Key: "Round" 
+                    Value: "1:"
+                  - Key: "Disciplin" 
+                    Value: "2:"
+                  - Key: "Gender" 
+                    Value: "57:Tennis"
+                  - Key: "Age" 
+                    Value: "17"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 2"
+                start: "2000-01-02T20:00:00.00Z"
+                end: "2000-01-02T22:00:00.00Z"
+                source:
+                  channel: "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit"
+                  routerSource: "https://.."
+                classification:
+                  - Key: "Sport" 
+                    Value: "57:Tennis"
+                  - Key: "Competition" 
+                    Value: "1230:Gran Slam"
+                  - Key: "Event" 
+                    Value: "520:French Open"
+                  - Key: "Round" 
+                    Value: "1:"
+                  - Key: "Disciplin" 
+                    Value: "2:"
+                  - Key: "Gender" 
+                    Value: "57:Tennis"
+                  - Key: "Age" 
+                    Value: "17"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+              - _id: "uniqueEventId"
+                _rev: "1-.."
+                type: "event"
+                name: "Event 2"
+                start: "2000-01-02T20:00:00.00Z"
+                end: "2000-01-02T22:00:00.00Z"
+                source:
+                  channel: "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit"
+                  routerSource: "https://.."
+                classification:
+                  - Key: "Sport" 
+                    Value: "57:Tennis"
+                  - Key: "Competition" 
+                    Value: "1230:Gran Slam"
+                  - Key: "Event" 
+                    Value: "520:French Open"
+                  - Key: "Round" 
+                    Value: "1:"
+                  - Key: "Disciplin" 
+                    Value: "2:"
+                  - Key: "Gender" 
+                    Value: "57:Tennis"
+                  - Key: "Age" 
+                    Value: "17"
+                seriesId: "seriesId"
+                series:
+                  _id: "seriesId"
+                  _rev: "1-.."
+                  type: "series"
+                  start: "2000-01-01T20:00:00.00Z"
+                  end: "2000-01-01T22:00:00.00Z"
+                  repeat: "EveryDay"
+                  endBy: "2000-01-02"
+                status: "Ready"
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    get:
+      tags:
+      - Ingest Events
+      summary: "Find event(s) from the store"
+      description: "This method is used to return a collection of ingest event(s) retrieved from store."
+      operationId: getEvents
+      produces:
+      - "application/json"
+      - "application/xml"
+      responses:
+        200:
+          description: "Operation successful."
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Event"
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+    put:
+      tags:
+      - Ingest Events
+      summary: "Modify event(s) in the store with form data"
+      description: "This method is used to update a collection of ingest events in store."
+      operationId: updateEvents
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: body
+        name: body
+        description: "Event object that needs to be updated to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/EventUpdateDto"
+      responses:
+        200:
+          description: "Operation successful."
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/Event"
         405:
           description: "Invalid input"
       security:
-      - eventstore_auth:
-        - "write:events"
-        - "read:events"
+      - scs_auth:
+        - platform
+        - platform.readonly
+    delete:
+      tags:
+      - Ingest Events
+      summary: "Remove event(s) from the store"
+      description: "This method is used to delete a collection of ingest events in store."
+      operationId: deleteEvents
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: body
+        name: body
+        description: "Event object that needs to be deleted from the store"
+        required: true
+        schema:
+          $ref: "#/definitions/EventDeleteDto"
+      responses:
+        204:
+          description: "Operation successful."
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Event not found"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
   /events/{eventId}:
     get:
       tags:
-      - "event"
-      summary: "Find event by ID"
-      description: "Returns a single event"
-      operationId: "getEventById"
+      - Ingest Events
+      summary: "Find an event by ID from the store"
+      description: "This method is used to return a single ingest event retrieved from store by the matching ID."
+      operationId: getEventById
       produces:
-      - "application/xml"
       - "application/json"
+      - "application/xml"
       parameters:
-      - name: "eventId"
-        in: "path"
+      - in: path
+        name: eventId
         description: "ID of event to return"
         required: true
-        type: "integer"
-        format: "int64"
+        type: string
       responses:
         200:
-          description: "successful operation"
+          description: "Operation successful."
           schema:
             $ref: "#/definitions/Event"
         400:
@@ -75,174 +311,483 @@ paths:
         404:
           description: "Event not found"
       security:
-      - api_Key: []
+      - scs_auth:
+        - platform
+        - platform.readonly
     put:
       tags:
-      - "event"
-      summary: "Updates a event in the store with form data"
-      description: ""
-      operationId: "updateEventWithForm"
+      - Ingest Events
+      summary: "Modify an event in the store with form data"
+      description: "This method is used to update a single ingest event in store by the matching ID."
+      operationId: updateEventById
       consumes:
       - "application/x-www-form-urlencoded"
       produces:
-      - "application/xml"
       - "application/json"
+      - "application/xml"
       parameters:
-      - name: "eventId"
-        in: "path"
+      - in: path
+        name: eventId
         description: "ID of event that needs to be updated"
         required: true
-        type: "integer"
-        format: "int64"
-      - name: "body"
-        in: "body"        
+        type: string
+      - in: body
+        name: body
         description: "Event object that needs to be updated to the store"
         required: true
         schema:
-          $ref: "#/definitions/UpdateEventDto"
+          $ref: "#/definitions/EventModel"
       responses:
+        200:
+          description: "Operation successful."
+          schema:
+            $ref: "#/definitions/Event"
         405:
           description: "Invalid input"
       security:
-      - eventstore_auth:
-        - "write:events"
-        - "read:events"
+      - scs_auth:
+        - platform
+        - platform.readonly
     delete:
       tags:
-      - "event"
-      summary: "Deletes a event"
-      description: ""
-      operationId: "deleteEvent"
+      - Ingest Events
+      summary: "Remove an event from the store"
+      description: "This method is used to delete a single ingest event in store by the matching ID."
+      operationId: deleteEventById
       produces:
-      - "application/xml"
       - "application/json"
+      - "application/xml"
       parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "eventId"
-        in: "path"
+      - in: path
+        name: eventId
         description: "Event id to delete"
         required: true
-        type: "integer"
-        format: "int64"
+        type: string
       responses:
+        204:
+          description: "Operation successful."
         400:
           description: "Invalid ID supplied"
         404:
           description: "Event not found"
       security:
-      - eventstore_auth:
-        - "write:events"
-        - "read:events"
-securityDefinitions:
-  eventstore_auth:
-    type: "oauth2"
-    authorizationUrl: "http://eventstore.swagger.io/oauth/dialog"
-    flow: "implicit"
-    scopes:
-      write:events: "modify events in your account"
-      read:events: "read your events"
-  api_Key:
-    type: "apiKey"
-    name: "api_key"
-    in: "header"
+      - scs_auth:
+        - platform
+        - platform.readonly
+
+  /events/{eventId}/status/{status}:
+    put:
+      tags:
+      - Ingest Events
+      summary: "Modify an event status in the store"
+      description: "This method is used to update status of a single ingest event in store by the matching ID."
+      operationId: updateStatusById
+      consumes:
+      - "application/x-www-form-urlencoded"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - in: path
+        name: eventId
+        description: "ID of event that status needs to be updated"
+        required: true
+        type: string
+      - in: path
+        name: status
+        description: "Status of event to be updated"
+        required: true
+        type: string
+        enum: ["Unknown", "Ready", "Cueing", "Cued", "Recording", "Done", "Failed"]
+      responses:
+        200:
+          description: "Operation successful."
+        405:
+          description: "Invalid input"
+      security:
+      - scs_auth:
+        - platform
+        - platform.readonly
+
 definitions:
   Property:
-    type: "object"
+    type: object
+    description: "For custom metadata."
     properties:
       Key: 
-        type: "string"
-        default: "ChannelId"
+        type: string
+        description: "The identifier of the KeyValuePair."
+        #default: "ChannelId"
       Value:
-        type: "object"
+        type: object
+        description: "The value of the KeyValuePair."
       Type: 
-        type: "string"
+        type: string
+        description: "The type of value in the KeyValuePair."
         enum:
           - "System.String"
           - "System.Boolean"
-  Properties:
-    type: "array"
+  PropertyList:
+    type: array
+    description: "A collection of custom metadata."
     items:
-        $ref: "#/definitions/Property"  
-  EventChannel:
-    type: "object"
-    properties: 
-      Instance: 
-        type: "string"
-      Properties:
-        $ref: "#/definitions/Properties"
-  EventChannels:
-    type: "array"
+      $ref: "#/definitions/Property"
+      description: "The collection of Property."
+  KeyValuePair:
+    type: object
+    properties:
+      Key: 
+        type: string
+      Value:
+        type: object
+  ClassificationList:
+    type: array
+    items:
+      $ref: "#/definitions/Property"
+    example:
+      - Key: "Sport" 
+        Value: "57:Tennis"
+      - Key: "Competition" 
+        Value: "1230:Gran Slam"
+      - Key: "Event" 
+        Value: "520:French Open"
+      - Key: "Round" 
+        Value: "1:"
+      - Key: "Disciplin" 
+        Value: "2:"
+      - Key: "Gender" 
+        Value: "57:Tennis"
+      - Key: "Age" 
+        Value: "17"
+  Schedule:
+      type: object
+      description: "For scheduling ingest event, containing information of recursive events."
+      properties:
+        start: 
+          type: string
+          format: datetime
+          description: "Indicate starting time of a particular event in the recursion."
+        end:
+          type: string
+          format: datetime
+          description: "Indicate ending time of a particular event in the recursion."
+        repeat: 
+          type: string
+          description: "Indicate repeating pattern of the recursion."
+          default: "None"
+          enum:
+            - "None"
+            - "EveryDay"
+            - "EveryWeek"
+            - "EveryMonth"
+            - "EveryYear"
+        endBy:
+          type: string
+          format: date
+          description: "Indicate the last event's date in the recursion, no further event later than this date created in the recursion."
+      # example:
+      #   start: "2019-09-25T06:35:10.00Z"
+      #   end: "2019-09-25T06:35:50.00Z"
+      #   repeat: "None"
+  # RegisteredType:
+  #   type: object
+  #   properties:
+  #     category:
+  #       type: string
+  #     format:
+  #       type: string
+  # URI:
+  #   type: object
+  #   properties:
+  #     url:
+  #       type: object
+  #       properties:
+  #         domain:
+  #           type: string
+  #         device:
+  #           type: string
+  #         location:
+  #           type: string
+  #         asset: 
+  #           type: string
+  #     registeredType:
+  #       $ref: "#/definitions/RegisteredType"
+  EventSource:
+    type: object
+    description: "Specify the source of the ingest event used in recording."
+    properties:
+      channel: 
+        type: string
+        description: "A channel that going to start recording. A formatted string."
+        example: "8dde15c4-ca1b-4872-8082-58bfad889daa/MDI-SA001/Mock-sa-001/C1,channel/summit"
+      routerSource:
+        type: string
+        description: "A router source going to feed in the recording event."
+  EventCreate:
+    type: object
+    description: "For create new ingest event, containing all information used to start an event recording."
+    properties:
+      name:
+        type: string
+        description: "Name of the event."
+      source:
+        $ref: "#/definitions/EventSource"
+      start: 
+        type: string
+        format: datetime
+        description: "Indicate starting date and time of this ingest event."
+      end:
+        type: string
+        format: datetime
+        description: "Indicate ending date and time of this ingest event."
+      classification: 
+        $ref: "#/definitions/PropertyList"
+      isCrash:
+        type: boolean
+        description: "Indicate whether this ingest event is a crash recording (start immediately). By default is false, which implies that not start immediately."
+        default: false
+      isAutoAssigned:
+        type: boolean
+        description: "Indicate whether this ingest event is required to auto assign recording channel. By default is false, which implies that not auto assign recording channel."
+        default: false
+      properties:
+        $ref: "#/definitions/PropertyList"
+  EventCreateDto:
+    type: array
+    description: "A data transfer object used in POST body, serve to add new event(s) into store."
+    required:
+      - events
     items: 
-      $ref: "#/definitions/EventChannel"
-  CreateEventDto:
-    type: "object"
-    properties:
-      Id:
-        type: "string"
-        format: "uuid"
-      EventChannels: 
-        $ref: "#/definitions/EventChannels"   
-      Properties:
-        $ref: "#/definitions/Properties"
+      properties:
+        series:
+          $ref: "#/definitions/Schedule"
+        events:
+          type: array
+          description: "A collection of new ingest event(s) to be added into store."
+          items:
+            $ref: "#/definitions/EventCreate"
     example:
-      Id: "{uuid}"
-      EventChannels: 
-        - Instance: "Main"
-          Properties:
-            - Key: "ChannelId"
-              Value: "{channelId}"
-            - Key: "ClipLocation"
-              Value: "default"
-              Type: "System.String"
-            - Key: "IsAutoAssigned"
-              Value: false  
-      Properties:
-        - Key: "Type"
-          Value: "Feed"
-        - Key: "ChannelType"
-          Value: "PlayerRecorder"
-        - Key: "Name"
-          Value: "SFeed_{uuid}"
-        - Key: "StartDateTime"
-          Value: "2019-09-25T06:35:10.00Z"
-        - Key: "EndDateTime"
-          Value: "2019-09-25T06:35:50.00Z"
-        - Key: "IsCrash"
-          Value: false
-  UpdateEventDto:
-    type: "array"
-    items:
-      $ref: "#/definitions/Properties"
-    example:
-        - Key: "ChannelId"
-          Value: "{channelId}"
-        - Key: "ClipLocation"
-          Value: "default"
-          Type: "System.String"
-  Event:
-    type: "object"
+      series:
+        start: "2000-01-01T20:00:00.00Z"
+        end: "2000-01-01T22:00:00.00Z"
+        repeat: "EveryDay"
+        endBy: "2000-01-02"
+      events:
+        - name: "Event 1"
+          start: "2000-01-01T20:00:00.00Z"
+          end: "2000-01-01T22:00:00.00Z"
+          source:
+            channel: "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit"
+            routerSource: "https://.."
+          classification:
+            - Key: "Sport" 
+              Value: "57:Tennis"
+            - Key: "Competition" 
+              Value: "1230:Gran Slam"
+            - Key: "Event" 
+              Value: "520:French Open"
+            - Key: "Round" 
+              Value: "1:"
+            - Key: "Disciplin" 
+              Value: "2:"
+            - Key: "Gender" 
+              Value: "57:Tennis"
+            - Key: "Age" 
+              Value: "17"
+        - name: "Event 1"
+          start: "2000-01-01T20:00:00.00Z"
+          end: "2000-01-01T22:00:00.00Z"
+          source:
+            channel: "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit"
+            routerSource: "https://.."
+          classification:
+            - Key: "Sport" 
+              Value: "57:Tennis"
+            - Key: "Competition" 
+              Value: "1230:Gran Slam"
+            - Key: "Event" 
+              Value: "520:French Open"
+            - Key: "Round" 
+              Value: "1:"
+            - Key: "Disciplin" 
+              Value: "2:"
+            - Key: "Gender" 
+              Value: "57:Tennis"
+            - Key: "Age" 
+              Value: "17"
+        - name: "Event 2"
+          start: "2000-01-02T20:00:00.00Z"
+          end: "2000-01-02T22:00:00.00Z"
+          source:
+            channel: "8dde15c4-ca1b-4872-8082-58bfad889daa/London-MDI-1/London-SUM-1/C1,channel/summit"
+            routerSource: "https://.."
+          classification:
+            - Key: "Sport" 
+              Value: "57:Tennis"
+            - Key: "Competition" 
+              Value: "1230:Gran Slam"
+            - Key: "Event" 
+              Value: "520:French Open"
+            - Key: "Round" 
+              Value: "1:"
+            - Key: "Disciplin" 
+              Value: "2:"
+            - Key: "Gender" 
+              Value: "57:Tennis"
+            - Key: "Age" 
+              Value: "17"
+        - name: "Event 2"
+          start: "2000-01-02T20:00:00.00Z"
+          end: "2000-01-02T22:00:00.00Z"
+          source:
+            channel: "66037096-dbb8-4836-85db-9c0661a4b094/Paris-MDI-1/Paris-SUM-1/C1,channel/summit"
+            routerSource: "https://.."
+          classification:
+            - Key: "Sport" 
+              Value: "57:Tennis"
+            - Key: "Competition" 
+              Value: "1230:Gran Slam"
+            - Key: "Event" 
+              Value: "520:French Open"
+            - Key: "Round" 
+              Value: "1:"
+            - Key: "Disciplin" 
+              Value: "2:"
+            - Key: "Gender" 
+              Value: "57:Tennis"
+            - Key: "Age" 
+              Value: "17"
+  EventUpdateDto:
+    type: object
+    required:
+      - events
     properties:
-      Id:
-        type: "string"
-      EventChannels:
-        $ref: "#/definitions/EventChannels"
-      Properties:
-        $ref: "#/definitions/Properties"
-    xml:
-      name: "Event"
-  ApiResponse:
-    type: "object"
+      series:
+        $ref: "#/definitions/SeriesModel"
+      events:
+        type: array
+        description: "A collection of ingest event(s) to be updated into store."
+        items:
+          $ref: "#/definitions/EventModel"
+  EventDeleteDto:
+    type: object
+    required:
+      - events
     properties:
-      code:
-        type: "integer"
-        format: "int32"
+      events:
+        type: array
+        description: "A collection of existing ingest event(s) to be deleted from store."
+        items:
+          $ref: "#/definitions/DocumentBase"
+  
+  EventStatus:
+    type: string
+    description: "Indicate the status of the recording ingest event."
+    enum: &EVENTSTATUS
+      - "Unknown"
+      - "Ready"
+      - "Cueing"
+      - "Cued"
+      - "Recording"
+      - "Done"
+      - "Failed"
+  DocumentBase:
+    type: object
+    required:
+      - _id
+      - _rev
+    properties:
+      _id:
+        type: string
+        description: "Unique document ID."
+      _rev:
+        type: string
+        description: "Revision of the document."
       type:
-        type: "string"
-      message:
-        type: "string"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+        type: string
+        description: "Type of the document."
+        example: 
+          "\"event\"; \"series\""
+  SeriesModel:
+    allOf:
+      - $ref: '#/definitions/DocumentBase'
+      - $ref: '#/definitions/Schedule'
+    properties:
+      type: 
+        type: string
+        default: "series"
+  EventModel:
+    allOf:
+      - $ref: '#/definitions/DocumentBase'
+      - $ref: '#/definitions/EventCreate'
+    properties:
+      type: 
+        type: string
+        default: "event"
+      seriesId: 
+        type: string
+      status:
+        $ref: '#/definitions/EventStatus'
+      asset:
+        type: string
+        description: "Show only after recording started"
+  Event:
+    allOf:
+      - $ref: '#/definitions/EventModel'
+    type: object
+    description: "Expanded event model for display/edit purpose."
+    required:
+    - series
+    properties:
+      series:
+        $ref: "#/definitions/SeriesModel"
+  Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+          description: "HTTP response status code."
+        message:
+          type: string
+          description: "Error message describing to issue."
+responses:
+  GenericError:      # Can be referenced as '#/components/responses/GenericError'
+    description: "An error occurred."
+    schema:
+      $ref: '#/definitions/Error'
+  400:
+    description: Bad Request
+    schema:
+      $ref: '#/definitions/Error'
+  401:
+    description: "Unauthorized. OAuth2 token or scope is invalid."
+    schema:
+      $ref: '#/definitions/Error'
+  403:
+    description: Forbidden
+    schema:
+      $ref: '#/definitions/Error'
+  404:
+    description: "Event not found."
+    schema:
+      $ref: '#/definitions/Error'
+  405:
+    description: "Method not allowed."
+    schema:
+      $ref: '#/definitions/Error'
+  500:
+    description: "Microservice failure, please retry."
+    schema:
+      $ref: '#/definitions/Error'
+  501:
+    description: "Not implemented. This endpoint is read-only."
+    schema:
+      $ref: '#/definitions/Error'
+  502:
+    description: "Microservice timeout, please retry."
+    schema:
+      $ref: '#/definitions/Error'
