@@ -223,6 +223,16 @@ paths:
           $ref: "#/responses/400"
         404:
           $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
@@ -252,8 +262,20 @@ paths:
             type: array
             items:
               $ref: "#/definitions/Event"
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
         405:
-          description: "Invalid input"
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
@@ -278,9 +300,19 @@ paths:
         204:
           description: "Operation successful."
         400:
-          description: "Invalid ID supplied"
+          $ref: "#/responses/400"
         404:
-          description: "Event not found"
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
@@ -307,9 +339,19 @@ paths:
           schema:
             $ref: "#/definitions/Event"
         400:
-          description: "Invalid ID supplied"
+          $ref: "#/responses/400"
         404:
-          description: "Event not found"
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
@@ -342,8 +384,20 @@ paths:
           description: "Operation successful."
           schema:
             $ref: "#/definitions/Event"
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
         405:
-          description: "Invalid input"
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
@@ -367,9 +421,19 @@ paths:
         204:
           description: "Operation successful."
         400:
-          description: "Invalid ID supplied"
+          $ref: "#/responses/400"
         404:
-          description: "Event not found"
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
@@ -402,8 +466,20 @@ paths:
       responses:
         200:
           description: "Operation successful."
+        400:
+          $ref: "#/responses/400"
+        404:
+          $ref: "#/responses/404"
         405:
-          description: "Invalid input"
+          $ref: "#/responses/405"
+        500:
+          $ref: "#/responses/500"
+        501:
+          $ref: "#/responses/501"
+        502:
+          $ref: "#/responses/502"
+        default:
+          $ref: "#/responses/GenericError"
       security:
       - scs_auth:
         - platform
