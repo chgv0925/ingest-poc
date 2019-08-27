@@ -37,7 +37,56 @@ paths:
       parameters:
       - in: body
         name: body
-        description: "Event object that needs to be added to the store"
+        description: 
+          "
+          ### This method is used to insert a collection of ingest event(s) into store.
+          
+          ---
+          
+          ***___series___ field is optional except for <a href=\"#recurr-event\">Recurring Event</a> case, if not provided, system will automatic create one and associate it with the events in POST body.***
+          
+          # <a name=\"single-event\">Single Event</a>
+          
+              * required ___events___ field containing one event object
+          
+            1. ## With one recording event on one site
+            
+            
+          
+          # <a name=\"multi-event\">Multiple Events</a>
+          
+              * required ___events___ field containing more than one event object
+          
+            1. ## Recording events on one site
+            
+              >1. ### Same date-time, different channel
+              
+              >1. ### Different date-time, same channel
+              
+              >1. ### Different date-time, different channel
+              
+            2. ## Recording events on multiple site
+            
+              >1. ### Same date-time, same site, different channel
+            
+              >1. ### Same date-time, different site, different channel
+              
+              >1. ### Different date-time, same site, same channel
+              
+              >1. ### Different date-time, same site, different channel
+              
+              >1. ### Different date-time, different site, same channel
+              
+              >1. ### Different date-time, different site, different channel
+          
+          
+          # <a name=\"recurr-event\">Recurring Events</a>
+          
+              * similar to <a href=\"#multi-event\">Multiple Events</a>
+              
+              * required ___series___ field to indicate the type of recursion
+          
+          "
         required: true
         schema:
           $ref: "#/definitions/EventCreateDto"
@@ -207,7 +256,11 @@ paths:
       tags:
       - Ingest Events
       summary: "Find event(s) from the store"
-      description: "This method is used to return a collection of ingest event(s) retrieved from store."
+      description: 
+          "
+          ### This method is used to return a collection of ingest event(s) retrieved from store.
+          
+          "
       operationId: getEvents
       produces:
       - "application/json"
@@ -241,7 +294,15 @@ paths:
       tags:
       - Ingest Events
       summary: "Modify event(s) in the store with form data"
-      description: "This method is used to update a collection of ingest events in store."
+      description: 
+          "
+          ### This method is used to update a collection of ingest events in store.
+          
+          ---
+          
+          * similar to POST events, except PUT is updating existing event(s) based on ***_id*** (document ID) and ***_rev*** (document revision) 
+
+          "
       operationId: updateEvents
       consumes:
       - "application/x-www-form-urlencoded"
@@ -284,7 +345,11 @@ paths:
       tags:
       - Ingest Events
       summary: "Remove event(s) from the store"
-      description: "This method is used to delete a collection of ingest events in store."
+      description: 
+          "
+          ### This method is used to delete a collection of ingest events in store.
+          
+          "
       operationId: deleteEvents
       produces:
       - "application/json"
@@ -322,7 +387,11 @@ paths:
       tags:
       - Ingest Events
       summary: "Find an event by ID from the store"
-      description: "This method is used to return a single ingest event retrieved from store by the matching ID."
+      description: 
+          "
+          ### This method is used to return a single ingest event retrieved from store by the matching ID.
+          
+          "
       operationId: getEventById
       produces:
       - "application/json"
@@ -360,7 +429,10 @@ paths:
       tags:
       - Ingest Events
       summary: "Modify an event in the store with form data"
-      description: "This method is used to update a single ingest event in store by the matching ID."
+      description: 
+        "
+          ### This method is used to update a single ingest event in store by the matching ID.
+        " 
       operationId: updateEventById
       consumes:
       - "application/x-www-form-urlencoded"
@@ -406,7 +478,11 @@ paths:
       tags:
       - Ingest Events
       summary: "Remove an event from the store"
-      description: "This method is used to delete a single ingest event in store by the matching ID."
+      description: 
+          "
+          ### This method is used to delete a single ingest event in store by the matching ID.
+          
+          "
       operationId: deleteEventById
       produces:
       - "application/json"
@@ -444,7 +520,11 @@ paths:
       tags:
       - Ingest Events
       summary: "Modify an event status in the store"
-      description: "This method is used to update status of a single ingest event in store by the matching ID."
+      description: 
+          "
+          ### This method is used to update status of a single ingest event in store by the matching ID.
+          
+          "
       operationId: updateStatusById
       consumes:
       - "application/x-www-form-urlencoded"
