@@ -709,19 +709,18 @@ definitions:
       properties:
         $ref: "#/definitions/PropertyList"
   EventCreateDto:
-    type: array
+    type: object
     description: "A data transfer object used in POST body, serve to add new event(s) into store."
     required:
       - events
-    items: 
-      properties:
-        series:
-          $ref: "#/definitions/Schedule"
-        events:
-          type: array
-          description: "A collection of new ingest event(s) to be added into store."
-          items:
-            $ref: "#/definitions/EventCreate"
+    properties:
+      series:
+        $ref: "#/definitions/Schedule"
+      events:
+        type: array
+        description: "A collection of new ingest event(s) to be added into store."
+        items:
+          $ref: "#/definitions/EventCreate"
     example:
       series:
         start: "2000-01-01T20:00:00.00Z"
