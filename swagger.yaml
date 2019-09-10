@@ -27,11 +27,11 @@ paths:
       - Ingest Events
       summary: "Add new event(s) to the store"
       description: "This method is used to insert one or more ingest event(s) into store."
-      operationId: addEvent
-      consumes:
+      operationId: addEvents
+      produces:
       - "application/json"
       - "application/xml"
-      produces:
+      consumes:
       - "application/json"
       - "application/xml"
       parameters:
@@ -265,6 +265,31 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
+      parameters:
+      - in: query
+        name: startTime
+        description: 
+          "
+          ##### This **optional** query parameter is used to filter return result.
+          The resulting collection will have ___start___ field greater than or equal to this value.
+          "
+        type: string
+      - in: query
+        name: endTime
+        description: 
+          "
+          ##### This **optional** query parameter is used to filter return result.
+          The resulting collection will have ___end___ field less than or equal to this value.
+          "
+        type: string
+      - in: query
+        name: channel
+        description: 
+          "
+          ##### This **optional** query parameter is used to filter return result.
+          The resulting collection will have ___channel___ field equal to this value.
+          "
+        type: string
       responses:
         200:
           description: "Operation successful."
@@ -304,9 +329,10 @@ paths:
 
           "
       operationId: updateEvents
-      consumes:
-      - "application/x-www-form-urlencoded"
       produces:
+      - "application/json"
+      - "application/xml"
+      consumes:
       - "application/json"
       - "application/xml"
       parameters:
@@ -352,6 +378,9 @@ paths:
           "
       operationId: deleteEvents
       produces:
+      - "application/json"
+      - "application/xml"
+      consumes:
       - "application/json"
       - "application/xml"
       parameters:
@@ -434,9 +463,10 @@ paths:
           ### This method is used to update a single ingest event in store by the matching ID.
         " 
       operationId: updateEventById
-      consumes:
-      - "application/x-www-form-urlencoded"
       produces:
+      - "application/json"
+      - "application/xml"
+      consumes:
       - "application/json"
       - "application/xml"
       parameters:
@@ -487,6 +517,9 @@ paths:
       produces:
       - "application/json"
       - "application/xml"
+      consumes:
+      - "application/json"
+      - "application/xml"
       parameters:
       - in: path
         name: eventId
@@ -526,9 +559,10 @@ paths:
           
           "
       operationId: updateStatusById
-      consumes:
-      - "application/x-www-form-urlencoded"
       produces:
+      - "application/json"
+      - "application/xml"
+      consumes:
       - "application/json"
       - "application/xml"
       parameters:
@@ -867,35 +901,39 @@ definitions:
     allOf:
       - $ref: '#/definitions/DocumentBase'
       - $ref: '#/definitions/Schedule'
-    properties:
-      type: 
-        type: string
-        default: "series"
+      - properties:
+          type: 
+            type: string
+            default: "series"
+        required:
+          - type
   EventModel:
     allOf:
       - $ref: '#/definitions/DocumentBase'
       - $ref: '#/definitions/EventCreate'
-    properties:
-      type: 
-        type: string
-        default: "event"
-      seriesId: 
-        type: string
-      status:
-        $ref: '#/definitions/EventStatus'
-      asset:
-        type: string
-        description: "Show only after recording started"
+      - properties:
+          type: 
+            type: string
+            default: "event"
+          seriesId: 
+            type: string
+          status:
+            $ref: '#/definitions/EventStatus'
+          asset:
+            type: string
+            description: "Show only after recording started"
+        required:
+          - type
   Event:
     allOf:
       - $ref: '#/definitions/EventModel'
-    type: object
-    description: "Expanded event model for display/edit purpose."
-    required:
-    - series
-    properties:
-      series:
-        $ref: "#/definitions/SeriesModel"
+      - type: object
+        description: "Expanded event model for display/edit purpose."
+        required:
+        - series
+        properties:
+          series:
+            $ref: "#/definitions/SeriesModel"
   Error:
       type: object
       required:
